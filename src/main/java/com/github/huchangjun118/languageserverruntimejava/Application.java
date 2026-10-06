@@ -1,11 +1,17 @@
 package com.github.huchangjun118.languageserverruntimejava;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import com.github.huchangjun118.languageserverruntimejava.server.LanguageServer;
 
-@SpringBootApplication
-public class Application {
-    public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
+/**
+ * Entry point of the language server. Communicates over standard input/output.
+ */
+public final class Application {
+    private Application() {
+    }
+
+    public static void main(String[] args) throws Exception {
+        LanguageServer server = new LanguageServer(System.in, System.out);
+        int exitCode = server.run();
+        System.exit(exitCode);
     }
 }
