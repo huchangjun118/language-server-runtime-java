@@ -1,11 +1,26 @@
 package com.github.huchangjun118.languageserverruntimejava;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import com.github.huchangjun118.languageserverruntimejava.lsp.LspServer;
+import com.github.huchangjun118.languageserverruntimejava.lsp.ServerConfig;
 
-@SpringBootApplication
-public class Application {
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+
+/**
+ * Entry point of the standalone language server.
+ * Speaks the Language Server Protocol over stdin/stdout; all logging goes to
+ * stderr so the protocol stream on stdout stays clean.
+ */
+public final class Application {
+    private Application() {
+    }
+
     public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
+        ServerConfig config = ServerConfig.fromSystemProperties();
+        LspServer server = new LspServer(
+                new BufferedInputStream(System.in),
+                new BufferedOutputStream(System.out),
+                config);
+        server.run();
     }
 }
